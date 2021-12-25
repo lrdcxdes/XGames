@@ -170,10 +170,9 @@ class Ui_Window(object):
         z = 1
         x, y = 20, 10
 
-        ww = round(len(self.games_list) / 5 * 400)
+        ww = round((len(self.games_list) / 5) * 334 ) + 334
 
         self.games_area.setMaximumHeight(ww)
-        self.games_content.setMaximumHeight(ww)
         self.games_content.setFixedHeight(ww)
 
         path = os.getenv('TEMP') + '\\XGames\\'
