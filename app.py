@@ -156,6 +156,8 @@ class MyWindow(object):
                                       "    border-radius: 9px;\n"
                                       "} QPushButton:hover {\n"
                                       "    background: #454545;\n"
+                                      "} QPushButton:pressed {\n"
+                                      "    background: #454545;\n"
                                       "}")
         self.search_btn.setText("Найти")
         self.search_btn.setObjectName("search_btn")
@@ -259,7 +261,7 @@ border-radius: 14px;
             return error_message('Произошла ошибка:\n' + str(e) + '\n' + str(extract_tb(exc_info()[2])[0][1]))
 
     def make_lambda(self, game):
-        def setup():
+        def setup(label=None):
             self.dialog_game(game)
 
         return setup
@@ -303,6 +305,7 @@ border-radius: 14px;
             self.last_game_label.setText(i[1].name)
             self.last_game_label.setAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignHCenter)
             self.last_game_label.setWordWrap(True)
+            self.last_game_label.mousePressEvent = self.make_lambda(i[1])
 
             name = i[1].name
             name = name.replace(' ', '_').replace('\'', '')
