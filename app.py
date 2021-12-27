@@ -2,10 +2,10 @@
 import os.path
 import subprocess
 import urllib.request
+import webbrowser
 import zipfile
 from sys import exc_info
 from traceback import extract_tb
-import webbrowser
 import requests
 import winapps
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -83,6 +83,17 @@ def error_message(text):
     return QMessageBox.warning(Window, "ERROR", text)
 
 
+class Label(QtWidgets.QLabel):
+    def __init__(self, *args, **kwargs):
+        QtWidgets.QLabel.__init__(self, *args, **kwargs)
+
+    def enterEvent(self, event):
+        self.setStyleSheet('text-decoration: underline;')
+
+    def leaveEvent(self, event):
+        self.setStyleSheet('text-decoration: none;')
+
+
 class MyWindow(object):
     def __init__(self):
         self.path = None
@@ -139,13 +150,12 @@ class MyWindow(object):
         self.search_btn.setGeometry(QtCore.QRect(940, 10, 141, 31))
         self.search_btn.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.search_btn.setStyleSheet("QPushButton {\n"
-                                      "    background-color: lime;\n"
-                                      "    color: black;\n"
-                                      "    font: 63 8pt \"Segoe UI Variable Small Semibol\";\n"
+                                      "    background: #aadd46;\n"
+                                      "    color: white;\n"
+                                      "    font: 63 9pt \"Segoe UI Variable Small Semibol\";\n"
                                       "    border-radius: 9px;\n"
                                       "} QPushButton:hover {\n"
-                                      "    border: 1px solid dark;\n"
-                                      "    background-color: green;\n"
+                                      "    background: #454545;\n"
                                       "}")
         self.search_btn.setText("Найти")
         self.search_btn.setObjectName("search_btn")
@@ -251,11 +261,13 @@ border-radius: 14px;
     def make_lambda(self, game):
         def setup():
             self.dialog_game(game)
+
         return setup
 
     def make_lambda2(self, game):
         def setup():
             self.download_game(game)
+
         return setup
 
     def update_games(self):
@@ -279,7 +291,7 @@ border-radius: 14px;
             self.last_game.setGeometry(QtCore.QRect(x, y, 175, 240))
             self.last_game.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
 
-            setattr(self, 'game%d_label' % i[0], QtWidgets.QLabel(self.games_content))
+            setattr(self, 'game%d_label' % i[0], Label(self.games_content))
             self.last_game_label = getattr(self, 'game%d_label' % i[0])
             self.last_game_label.setGeometry(QtCore.QRect(x, y + 240, 175, 50))
 
@@ -458,6 +470,7 @@ QPushButton {
     def make_lambda3(self, game, text):
         def setup():
             self.dialog_info(game, text)
+
         return setup
 
     def dialog_info(self, game, texts):
