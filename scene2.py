@@ -127,7 +127,6 @@ border-radius: 14px;
 
     def make_lambda(self, game):
         def setup(*args):
-            print(args[0])
             self.open_game(game)
 
         return setup
@@ -203,7 +202,7 @@ border-radius: 14px;
             maximum = len(walk)
             for root, dirs, files in walk:
                 i += 1
-                if True in [game.name in i for i in files] and '.torrent' not in str(
+                if True in [game.name.lower() in i.lower() for i in files] and '.torrent' not in str(
                         files) and 'AppData' not in root and 'Documents' not in root and 'Документы' not in root:
                     return [root, files]
                 self.handle(i, maximum)
@@ -221,9 +220,13 @@ border-radius: 14px;
             self.handle(0, 100)
             if exe:
                 for i in exe[1]:
-                    if game.name in i:
+                    if game.name in i and 'деинстал' not in i.lower() and 'unin' not in i.lower():
                         path = exe[0] + '\\' + i
                         game.exe = path.replace('/', '\\')
+                        game.update_game()
+                    elif 'деинст' in i.lower() or 'unins' in i.lower():
+                        path = exe[0] + '\\' + i
+                        game.uninstall_exe = path.replace('/', '\\')
                         game.update_game()
             else:
                 self.error_message('Вы не установили игру!')

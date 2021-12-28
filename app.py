@@ -128,9 +128,11 @@ class Main(QtWidgets.QMainWindow):
         self.btn.setText("Поиск игр")
 
         self.scene1 = Scene1(self)
+        self.scene1.setWindowIcon(icon)
         self.scene1.setup_ui()
 
         self.scene2 = Scene2(self)
+        self.scene2.setWindowIcon(icon)
         self.scene2.setup_ui()
 
         self.scene2.hide()

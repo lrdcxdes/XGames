@@ -1,10 +1,8 @@
 import os
-import subprocess
 import webbrowser
 from sys import exc_info
 from traceback import extract_tb
 import requests
-import winapps
 from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtWidgets import QMessageBox
 from igruha import Igruha
@@ -288,18 +286,11 @@ border-radius: 14px;
 
         self.info_message('Торрент успешно закачан по пути:\n' + filename)
 
-        if self.torrent_url is None:
-            for programm in winapps.list_installed():
-                if 'torrent' in programm.name.lower():
-                    self.torrent_url = programm.install_location
-                    if self.torrent_url is None:
-                        continue
-        if self.torrent_url:
-            return subprocess.call(['"{}"'.format(str(self.torrent_url)), filename])
-        else:
-            a = filename.split('/')
-            a.remove(a[-1])
-            return os.startfile('/'.join(a))
+        try:
+            return os.startfile(filename)
+        except Exception as e:
+            return self.error_message(str(e))
+
 
     def dialog_game(self, game):
         if game.id is None:

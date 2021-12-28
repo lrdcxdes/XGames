@@ -94,9 +94,21 @@ class Game:
         self.img = self.source.get('img')
         self.installed = bool(self.source.get('installed'))
         self.exe = self.source.get('exe')
+        self.uninstall_exe = self.source.get('uninstall_exe')
 
     def remove(self):
-        self.games.games.remove(self)
+        try:
+            array = self.uninstall_exe.split('\\')
+            game_exe = array[-1]
+            os.chdir('\\'.join(array[0:-1]))
+            os.startfile(game_exe)
+        except Exception as e:
+            print(e)
+
+        try:
+            self.games.games.remove(self)
+        except Exception as e:
+            print(e)
         self.games.json.remove(self.source)
         json = dumps(self.games.json, sort_keys=True, indent=4)
         subprocess.call(['attrib', '-h', '.games.json'])
@@ -109,6 +121,8 @@ class Game:
         game_dict = {'name': self.name, 'path': self.path, 'installed': self.installed, 'img': self.img}
         if self.exe:
             game_dict['exe'] = self.exe
+        if self.uninstall_exe:
+            game_dict['uninstall_exe'] = self.uninstall_exe
         self.games.games[index] = Game(self.games, game_dict)
         self.games.json[index] = game_dict
         json = dumps(self.games.json, sort_keys=True, indent=4)
