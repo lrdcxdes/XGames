@@ -98,10 +98,7 @@ class Game:
 
     def remove(self):
         try:
-            array = self.uninstall_exe.split('\\')
-            game_exe = array[-1]
-            os.chdir('\\'.join(array[0:-1]))
-            os.startfile(game_exe)
+            os.startfile(self.uninstall_exe)
         except Exception as e:
             print(e)
 

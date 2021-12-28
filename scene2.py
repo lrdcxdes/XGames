@@ -213,6 +213,8 @@ border-radius: 14px;
         self.main()
 
     def open_game(self, game):
+        if self.game_state:
+            return
         if not game.exe:
             self.game_state = True
             exe = self.find_exe(game)
@@ -223,17 +225,13 @@ border-radius: 14px;
                     if game.name in i and 'деинстал' not in i.lower() and 'unin' not in i.lower():
                         path = exe[0] + '\\' + i
                         game.exe = path.replace('/', '\\')
-                        game.update_game()
                     elif 'деинст' in i.lower() or 'unins' in i.lower():
                         path = exe[0] + '\\' + i
                         game.uninstall_exe = path.replace('/', '\\')
-                        game.update_game()
+                    game.update_game()
             else:
                 self.error_message('Вы не установили игру!')
-        array = game.exe.split('\\')
-        game_exe = array[-1]
-        os.chdir('\\'.join(array[0:-1]))
-        os.startfile(game_exe)
+        os.startfile(game.exe)
 
     def info_message(self, text):
         return QMessageBox.about(self, "INFO", text)
