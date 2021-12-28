@@ -1,6 +1,8 @@
 # XGames
 Free Game Download Client
 
+📂 Скачать установщик: [XGames Setup.exe](https://t.me/lordcodesliv/7?single)
+
 ![Скриншот с программы](https://i.imgur.com/pWjLibv.png)
 
 В проекте была использована библиотека [igruha](https://pypi.org/project/igruha/) а также [PyQt5](https://pypi.org/project/PyQt5/)
