@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os.path
 import subprocess
+import sys
 import urllib.request
 
 import requests
@@ -53,10 +54,12 @@ class DownloadWidget(QtWidgets.QMainWindow):
             os.startfile(save_loc)
         except Exception as e:
             print(e)
+            try:
+                os.startfile('..')
+            except Exception as e:
+                print(e)
 
-        self.hide()
-
-        exit()
+        sys.exit()
 
 
 class Main(QtWidgets.QMainWindow):
