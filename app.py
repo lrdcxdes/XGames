@@ -62,6 +62,7 @@ class DownloadWidget(QtWidgets.QMainWindow):
 class Main(QtWidgets.QMainWindow):
     def __init__(self, *args, **kwargs):
         QtWidgets.QMainWindow.__init__(self, *args, **kwargs)
+        self.home = None
         self.palka = None
         self.btn = None
         self.scene2 = None
@@ -114,6 +115,22 @@ class Main(QtWidgets.QMainWindow):
         self.scene1 = Scene1(self)
         self.scene1.setWindowIcon(icon)
         self.scene1.setup_ui()
+
+        self.home = QtWidgets.QPushButton(self)
+        self.home.clicked.connect(self.scene1.search_main)
+        self.home.setGeometry(QtCore.QRect(1100, 10, 185, 80))
+        self.home.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.home.setStyleSheet("QPushButton {\n"
+                                "    background: #aadd46;\n"
+                                "    color: white;\n"
+                                "    font: 63 10pt \"Segoe UI Variable Small Semibol\";\n"
+                                "    border-radius: 9px;\n"
+                                "} QPushButton:hover {\n"
+                                "    background: #454545;\n"
+                                "} QPushButton:pressed {\n"
+                                "    background: #454545;\n"
+                                "}")
+        self.home.setText("Главное меню")
 
         self.scene2 = Scene2(self)
         self.scene2.setWindowIcon(icon)
