@@ -3,6 +3,9 @@ import requests
 import subprocess
 import os
 
+startupinfo = subprocess.STARTUPINFO()
+startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+
 
 class Games:
     def __init__(self):
@@ -12,13 +15,13 @@ class Games:
         except Exception as e:
             print(e)
         try:
-            subprocess.call(['attrib', '-h', '.games.json'])
+            subprocess.call(['attrib', '-h', '.games.json'], startupinfo=startupinfo)
             self.file = open('.games.json', 'r').read()
-            subprocess.call(['attrib', '+h', '.games.json'])
+            subprocess.call(['attrib', '+h', '.games.json'], startupinfo=startupinfo)
         except Exception as e:
             print(e)
             open('.games.json', 'w').write('[]')
-            subprocess.call(['attrib', '+h', '.games.json'])
+            subprocess.call(['attrib', '+h', '.games.json'], startupinfo=startupinfo)
             self.file = open('.games.json', 'r').read()
         self.json = loads(self.file)
         self.games = [Game(self, i) for i in self.json]
@@ -31,9 +34,9 @@ class Games:
             self.games[index] = Game(self, game_dict)
             self.json[index] = game_dict
             json = dumps(self.json, sort_keys=True, indent=4)
-            subprocess.call(['attrib', '-h', '.games.json'])
+            subprocess.call(['attrib', '-h', '.games.json'], startupinfo=startupinfo)
             open('.games.json', 'w').write(json)
-            subprocess.call(['attrib', '+h', '.games.json'])
+            subprocess.call(['attrib', '+h', '.games.json'], startupinfo=startupinfo)
             return
 
         game_dict = {'name': game.game_name, 'path': filename, 'installed': False}
@@ -62,9 +65,9 @@ class Games:
 
         json = dumps(self.json, sort_keys=True, indent=4)
 
-        subprocess.call(['attrib', '-h', '.games.json'])
+        subprocess.call(['attrib', '-h', '.games.json'], startupinfo=startupinfo)
         open('.games.json', 'w').write(json)
-        subprocess.call(['attrib', '+h', '.games.json'])
+        subprocess.call(['attrib', '+h', '.games.json'], startupinfo=startupinfo)
 
     def reload(self):
         try:
@@ -72,13 +75,13 @@ class Games:
         except Exception as e:
             print(e)
         try:
-            subprocess.call(['attrib', '-h', '.games.json'])
+            subprocess.call(['attrib', '-h', '.games.json'], startupinfo=startupinfo)
             self.file = open('.games.json', 'r').read()
-            subprocess.call(['attrib', '+h', '.games.json'])
+            subprocess.call(['attrib', '+h', '.games.json'], startupinfo=startupinfo)
         except Exception as e:
             print(e)
             open('.games.json', 'w').write('[]')
-            subprocess.call(['attrib', '+h', '.games.json'])
+            subprocess.call(['attrib', '+h', '.games.json'], startupinfo=startupinfo)
             self.file = open('.games.json', 'r').read()
         self.json = loads(self.file)
         self.games = [Game(self, i) for i in self.json]
@@ -108,9 +111,9 @@ class Game:
             print(e)
         self.games.json.remove(self.source)
         json = dumps(self.games.json, sort_keys=True, indent=4)
-        subprocess.call(['attrib', '-h', '.games.json'])
+        subprocess.call(['attrib', '-h', '.games.json'], startupinfo=startupinfo)
         open('.games.json', 'w').write(json)
-        subprocess.call(['attrib', '+h', '.games.json'])
+        subprocess.call(['attrib', '+h', '.games.json'], startupinfo=startupinfo)
         return self.games.reload()
 
     def update_game(self):
@@ -123,7 +126,7 @@ class Game:
         self.games.games[index] = Game(self.games, game_dict)
         self.games.json[index] = game_dict
         json = dumps(self.games.json, sort_keys=True, indent=4)
-        subprocess.call(['attrib', '-h', '.games.json'])
+        subprocess.call(['attrib', '-h', '.games.json'], startupinfo=startupinfo)
         open('.games.json', 'w').write(json)
-        subprocess.call(['attrib', '+h', '.games.json'])
+        subprocess.call(['attrib', '+h', '.games.json'], startupinfo=startupinfo)
         return self.games.reload()

@@ -44,6 +44,10 @@ class Scene2(QtWidgets.QWidget):
         self.games_area = None
         self.games_widgets = []
         self.game_state = {}
+        self.lenghts = (sum(1 for _ in os.walk(drv)) for drv in (chr(i) + ":\\" for i in
+                                                                 range(ord("A"),
+                                                                       ord("Z") + 1)))
+        self.lenght = None
 
     def setup_ui(self):
         self.resize(1093, 680)
@@ -134,6 +138,7 @@ border-radius: 14px;
     def make_lambda_delete(self, game):
         def setup():
             self.delete_game(game)
+
         return setup
 
     def main(self):
@@ -198,14 +203,12 @@ border-radius: 14px;
         for drv in (chr(i) + ":\\" for i in range(ord("A"), ord("Z") + 1)):
             self.handle(50, 100)
             i = 0
-            walk = list(os.walk(drv))
-            maximum = len(walk)
-            for root, dirs, files in walk:
+            for root, dirs, files in os.walk(drv):
                 i += 1
                 if True in [game.name.lower() in i.lower() for i in files] and '.torrent' not in str(
                         files) and 'AppData' not in root and 'Documents' not in root and 'Документы' not in root:
                     return [root, files]
-                self.handle(i, maximum)
+                self.handle(i, self.lenght)
         return False
 
     def delete_game(self, game):
@@ -217,6 +220,8 @@ border-radius: 14px;
             return
         if not game.exe:
             self.game_state = True
+            if self.lenght is None:
+                self.lenght = sum(self.lenghts)
             exe = self.find_exe(game)
             self.game_state = False
             self.handle(0, 100)
@@ -230,8 +235,12 @@ border-radius: 14px;
                         game.uninstall_exe = path.replace('/', '\\')
                     game.update_game()
             else:
-                self.error_message('Вы не установили игру!')
-        os.startfile(game.exe)
+                return self.error_message('Вы не установили игру!')
+        try:
+            os.startfile(game.exe)
+        except Exception as e:
+            print(e)
+            return self.error_message('Не удалось найти игру!')
 
     def info_message(self, text):
         return QMessageBox.about(self, "INFO", text)

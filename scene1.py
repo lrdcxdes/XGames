@@ -291,7 +291,6 @@ border-radius: 14px;
         except Exception as e:
             return self.error_message(str(e))
 
-
     def dialog_game(self, game):
         if game.id is None:
             try:

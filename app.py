@@ -8,6 +8,9 @@ from PyQt5 import QtWidgets, QtGui, QtCore
 from scene1 import Scene1
 from scene2 import Scene2
 
+startupinfo = subprocess.STARTUPINFO()
+startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+
 APP_VERSION = float(open('version', 'r', encoding='utf-8').readline().replace(' ', '').replace('\n', ''))
 
 VERSION = float(requests.get(url='https://raw.githubusercontent.com/LORD-ME-CODE/XGames/main/version'
@@ -59,15 +62,15 @@ class DownloadWidget(QtWidgets.QMainWindow):
             os.remove('../XGames {}.zip'.format(str(VERSION).replace('.', '_')))
         except Exception as e:
             print(e)
-        subprocess.call(['attrib', '-h', 'version'])
+        subprocess.call(['attrib', '-h', 'version'], startupinfo=startupinfo)
         open('../XGames {}/version'.format(str(VERSION).replace('.', '_')), 'w', encoding='utf-8').write(str(VERSION))
-        subprocess.call(['attrib', '+h', 'version'])
+        subprocess.call(['attrib', '+h', 'version'], startupinfo=startupinfo)
 
-        subprocess.call(['attrib', '-h', '.games.json'])
+        subprocess.call(['attrib', '-h', '.games.json'], startupinfo=startupinfo)
         json = open('.games.json', 'r', encoding='utf-8').read()
         subprocess.call(['attrib', '-h', '../XGames {}/.games.json'.format(str(VERSION).replace('.', '_'))])
         open('../XGames {}/.games.json'.format(str(VERSION).replace('.', '_')), 'w', encoding='utf-8').write(json)
-        subprocess.call(['attrib', '+h', '.games.json'])
+        subprocess.call(['attrib', '+h', '.games.json'], startupinfo=startupinfo)
         try:
             os.removedirs('../XGames {}/'.format(str(APP_VERSION).replace('.', '_')))
         except Exception as e:
