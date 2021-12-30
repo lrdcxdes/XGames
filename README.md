@@ -1,7 +1,7 @@
 # XGames
 Free Game Download Client
 
-📂 Скачать установщик: [XGames Setup.exe](https://t.me/lordcodesliv/7?single)
+📂 Скачать установщик: [XGames Setup.exe](https://github.com/LORD-ME-CODE/XGames/releases/download/setup/XGames.Setup.exe)
 
 **Скриншоты с программы**
 ![1](https://i.imgur.com/AUDyXGz.png)
