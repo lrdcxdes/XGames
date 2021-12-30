@@ -2,9 +2,10 @@
 import os.path
 import subprocess
 import urllib.request
-import zipfile
+
 import requests
 from PyQt5 import QtWidgets, QtGui, QtCore
+
 from scene1 import Scene1
 from scene2 import Scene2
 
@@ -44,38 +45,18 @@ class DownloadWidget(QtWidgets.QMainWindow):
         self.progressbar.setValue(0)
 
     def download(self):
-        down_url = 'https://github.com/LORD-ME-CODE/XGames/releases/download/v{}/XGames.zip'.format(APP_VERSION)
-        save_loc = '../XGames {}.zip'.format(str(VERSION).replace('.', '_'))
+        down_url = 'https://github.com/LORD-ME-CODE/XGames/releases/download/setup/XGames.Setup.exe'
+        save_loc = '../XGames Setup.exe'
         urllib.request.urlretrieve(down_url, save_loc, self.handle_progress)
 
-        with zipfile.ZipFile(save_loc) as zf:
-            self.progressbar.setMaximum(len(zf.infolist()))
-            x = 0
-            for member in zf.infolist():
-                x += 1
-                self.progressbar.setValue(x)
-                try:
-                    zf.extract(member, '../XGames {}/'.format(str(VERSION).replace('.', '_')))
-                except zipfile.error as e:
-                    print(e)
         try:
-            os.remove('../XGames {}.zip'.format(str(VERSION).replace('.', '_')))
+            os.startfile(save_loc)
         except Exception as e:
             print(e)
-        subprocess.call(['attrib', '-h', 'version'], startupinfo=startupinfo)
-        open('../XGames {}/version'.format(str(VERSION).replace('.', '_')), 'w', encoding='utf-8').write(str(VERSION))
-        subprocess.call(['attrib', '+h', 'version'], startupinfo=startupinfo)
 
-        subprocess.call(['attrib', '-h', '.games.json'], startupinfo=startupinfo)
-        json = open('.games.json', 'r', encoding='utf-8').read()
-        subprocess.call(['attrib', '-h', '../XGames {}/.games.json'.format(str(VERSION).replace('.', '_'))])
-        open('../XGames {}/.games.json'.format(str(VERSION).replace('.', '_')), 'w', encoding='utf-8').write(json)
-        subprocess.call(['attrib', '+h', '.games.json'], startupinfo=startupinfo)
-        try:
-            os.removedirs('../XGames {}/'.format(str(APP_VERSION).replace('.', '_')))
-        except Exception as e:
-            print(e)
         self.hide()
+
+        exit()
 
 
 class Main(QtWidgets.QMainWindow):
